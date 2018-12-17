@@ -26,6 +26,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props)
         axios.get('/ingredients.json')
             .then(res => {
                 this.setState({
@@ -134,6 +135,7 @@ class BurgerBuilder extends Component {
         //             purchasing: false
         //         });
         //     });
+        console.log(this.props)
         this.props.history.push({
             pathname: '/checkout'
         })
