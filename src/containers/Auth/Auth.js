@@ -6,6 +6,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
 
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class Auth extends Component {
     state = {
@@ -49,11 +50,11 @@ class Auth extends Component {
             if (rules.required) {
                 isValid = value.trim() !== '' && isValid;
             }
-    
+
             if (rules.minLength) {
                 isValid = value.length >= rules.minLength && isValid;
             }
-    
+
             if (rules.maxLength) {
                 isValid = value.length <= rules.maxLength && isValid;
             }
@@ -120,21 +121,28 @@ class Auth extends Component {
 
         if (this.props.error) {
             errorMessage = (
-                <p>{ this.props.error }</p>
+                <p>{this.props.error}</p>
             );
+        }
+
+        let authRedirect = null;
+
+        if (this.props.isAuth) {
+            authRedirect = <Redirect to={{ pathname: '/' }} />
         }
 
         return (
             <div className={classes.Auth}>
-                { errorMessage }
+                {authRedirect}
+                {errorMessage}
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button
                         btnType="Success">SUBMIT</Button>
                 </form>
-                <Button 
+                <Button
                     clicked={this.switchAuthModeHandler}
-                    btnType="Danger">SWITCH TO { this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
+                    btnType="Danger">SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
             </div>
         );
     }
@@ -142,7 +150,8 @@ class Auth extends Component {
 
 const mapStateToProps = state => ({
     loading: state.auth.loading,
-    error: state.auth.error
+    error: state.auth.error,
+    isAuth: state.auth.token !== null
 });
 
 const mapDispatchToProps = dispatch => ({
