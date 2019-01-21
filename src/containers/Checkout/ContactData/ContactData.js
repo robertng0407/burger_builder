@@ -115,7 +115,7 @@ class ContactData extends Component {
 
         this.props.onOrderBurger(order, this.props.token);
 
-        console.log(this.props.ingredients)
+        // console.log(this.props.ingredients)
     }
 
     inputChangedHandler = (event, inputIdentifier) => {
